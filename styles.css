@@ -1,0 +1,35 @@
+/* CSS styles for the chart */
+.bar {
+    fill: steelblue;
+}
+.bar:hover {
+    fill: orange;
+}
+.axis-x path,
+.axis-y path {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis-x .tick line,
+.axis-y .tick line {
+    stroke: #ccc;
+}
+
+.axis text {
+    font-size: 11px;
+}
+/* CSS styles for the chart */
+/* Tooltip styles */
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}

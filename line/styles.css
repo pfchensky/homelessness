@@ -1,0 +1,22 @@
+/* CSS styles for the chart */
+.dot {
+    fill: steelblue;
+}
+.dot:hover {
+    fill: orange;
+}
+.axis-x path,
+.axis-y path {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis-x .tick line,
+.axis-y .tick line {
+    stroke: #ccc;
+}
+
+.axis text {
+    font-size: 11px;
+}
