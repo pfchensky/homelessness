@@ -1,21 +1,4 @@
 /* CSS styles for the chart */
-.axis-x path,
-.axis-y path {
-    fill: none;
-    stroke: black;
-    shape-rendering: crispEdges;
-}
-
-.axis-x .tick line,
-.axis-y .tick line {
-    stroke: #ccc;
-}
-
-.axis text {
-    font-size: 11px;
-}
-
-/* Tooltip styles */
 .tooltip {
     position: absolute;
     background: rgba(0, 0, 0, 0.75);
@@ -26,4 +9,10 @@
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.15s ease;
+}
+
+#map_pie_section {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
 }

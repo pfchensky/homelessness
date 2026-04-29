@@ -30,7 +30,7 @@ svg.append("text")
     .text("Top 10 States by Total Homeless People(2013)");
 
 //read data and convert string to numeric
-d3.csv("2013_US_state_stats.csv").then(function(data){
+d3.csv("2013_US_state_stat_pro.csv").then(function(data){
   data.forEach(function(d){
     d.total_homeless_persons=+d.total_homeless_persons
   })

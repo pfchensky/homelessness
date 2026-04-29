@@ -4,7 +4,13 @@
   <title>Homelessness</title>
   <meta charset="utf-8">
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./bar/styles.css">
+  <link rel="stylesheet" href="./line/styles.css">
+  <link rel="stylesheet" href="./proportional/styles.css">
+  <link rel="stylesheet" href="./parallel/styles.css">
 </head>
 
 <body>
@@ -23,19 +29,33 @@
   Pie charts will show each state's categorical breakdown.
   A horizontal bar chart will compare state totals and help identify which states have the largest homeless populations.
   A line chart will show changes over time.
-  Finally, a parallel coordinate plot will display multiple variables simultaneously(state, total homeless population, sheltered, unsheltered, chronic, and family categories).
+  Finally, a parallel coordinate plot will display multiple variables simultaneously(state, total homeless persons,homeless rate, chronic, youth, vateran and unsheltered categories).
   </p>
 
   <p>
   Through these visualizations, users will gain a comprehensive understanding of homelessness distribution across U.S. states.
   </p>
-  <h2>Bar Chart(D3.js)</h2>
+
+  <h2>Homeless Proportional Symbol Map</h2>
+  <div id="map_pie_section">
+    <div id="proportional_symbols"></div>
+    <div id="pie_charts"></div>
+  </div>
+
+  <h2>Parallel Coordinates Plot</h2>
+  <div id="parallel_coordinate"></div>
+
+  <h2>Bar Chart</h2>
   <div id="bar_chart"></div>
-  <h2>Line Chart(D3.js)</h2>
+
+  <h2>Line Chart</h2>
   <div id="line_chart"></div>
+
   <div class="tooltip" id="tooltip"></div>
   <script type="module" src="./bar/bar.js"></script>
   <script type="module" src="./line/line.js"></script>
+  <script type="module" src="./proportional/proportional.js"></script>
+  <script type="module" src="./parallel/parallel.js"></script>
 </body>
 
 </html>

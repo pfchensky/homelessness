@@ -1,4 +1,15 @@
 /* CSS styles for the chart */
+.line {
+  fill: none;
+  stroke: blue;
+  stroke-width: 1.5;
+  opacity: 0.35;
+}
+.line:hover {
+  stroke: orange;
+  stroke-width: 3;
+  opacity: 1;
+}
 .axis-x path,
 .axis-y path {
     fill: none;
@@ -15,7 +26,6 @@
     font-size: 11px;
 }
 
-/* Tooltip styles */
 .tooltip {
     position: absolute;
     background: rgba(0, 0, 0, 0.75);

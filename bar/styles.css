@@ -1,6 +1,6 @@
 /* CSS styles for the chart */
 .bar {
-    fill: steelblue;
+    fill: blue;
 }
 .bar:hover {
     fill: orange;
