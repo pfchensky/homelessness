@@ -45,7 +45,7 @@ d3.csv("2013_US_state_stat_pro.csv").then(function(data){
   
   const dimensionLabels = {
     total_homeless_persons: "Total Homeless",
-    homeless_rate: "Rate",
+    homeless_rate: "Rate per 10,000",
     chronic_pct: "Chronic %",
     youth_pct: "Youth %",
     veterans_pct: "Veterans %",
