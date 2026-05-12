@@ -2,9 +2,9 @@
 .bar {
     fill: blue;
 }
-.bar:hover {
+/* .bar:hover {
     fill: orange;
-}
+} */
 .axis-x path,
 .axis-y path {
     fill: none;
@@ -19,4 +19,25 @@
 
 .axis text {
     font-size: 11px;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+p {
+  text-align: center;
+}
+
+#bar_chart {
+  width: 820px;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+#bar_chart svg {
+  display: block;
 }

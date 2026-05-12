@@ -28,7 +28,7 @@ svg.append("text")
   .attr("text-anchor", "middle")
   .attr("x", -svgHeight/2)
   .attr("y", 15)
-  .text("Population");
+  .text("Population(k)");
 
 // Chart title
 svg.append("text")
@@ -37,7 +37,7 @@ svg.append("text")
   .attr("font-weight","bold")
   .attr("x", svgWidth/2+20)
   .attr("y",30)
-  .text("USA Homeless People Population Distribution(2005-2013)");
+  .text("Homelessness Population Trend in the United States(2005-2013)");
 
 //read data and convert string to numeric
 d3.csv("year_national_overall.csv").then(function(data){
@@ -75,7 +75,7 @@ d3.csv("year_national_overall.csv").then(function(data){
         .on("mouseover", (event, d) =>{
       tooltip
         .html(`
-          Population: <strong>${d.overall}</strong><br>
+          Population: <strong>${d3.format(",")(d.overall)}</strong><br>
         `)
         .style("opacity", 1)
     })
@@ -103,5 +103,5 @@ d3.csv("year_national_overall.csv").then(function(data){
 
   chart.append("g")
     .attr("class", "axis axis-y")
-    .call(d3.axisLeft(scaleY).ticks(6).tickFormat(d3.format(",")));
+    .call(d3.axisLeft(scaleY).ticks(6).tickFormat(d => d3.format(".0f")(d / 1000)));
 })

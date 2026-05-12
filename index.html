@@ -1,61 +1,162 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-  <title>Homelessness</title>
-  <meta charset="utf-8">
+  <title>Homelessness Distribution in the United States</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+
+  <link rel="stylesheet" href="assets/css/main.css" />
+
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="./bar/styles.css">
   <link rel="stylesheet" href="./line/styles.css">
-  <link rel="stylesheet" href="./proportional/styles.css">
+  <link rel="stylesheet" href="./choropleth/styles.css">
   <link rel="stylesheet" href="./parallel/styles.css">
 </head>
 
-<body>
-    
-  <h1>Project Title: Homelessness Distribution in the United States</h1>
-  <h1>Name: Pengfang Chen</h1>
-  <h2>Project Description:</h2> 
+<body class="is-preload">
 
-  <p>
-  In this project, I will visualize the U.S. homeless population distribution data.
-  It includes five types of charts.
-  </p>
+  <section id="header">
+    <header>
+      <h1 id="logo">
+        <a href="#">Homelessness Distribution in the United States</a>
+      </h1>
+      <p>
+         By Pengfang Chen<br />
+      </p>
+    </header>
 
-  <p>
-  A proportional symbol map will display each state's location and total amount.
-  Pie charts will show each state's categorical breakdown.
-  A horizontal bar chart will compare state totals and help identify which states have the largest homeless populations.
-  A line chart will show changes over time.
-  Finally, a parallel coordinate plot will display multiple variables simultaneously(state, total homeless persons,homeless rate, chronic, youth, vateran and unsheltered categories).
-  </p>
+    <nav id="nav">
+      <ul>
+        <li><a href="#one" class="active">Choropleth Map</a></li>
+        <li><a href="#two">Pie Charts</a></li>
+        <li><a href="#three">Parallel Coordinates Plot</a></li>
+        <li><a href="#four">Bar Chart</a></li>
+        <li><a href="#five">Line Chart</a></li>
+      </ul>
+    </nav>
+  </section>
 
-  <p>
-  Through these visualizations, users will gain a comprehensive understanding of homelessness distribution across U.S. states.
-  </p>
+  <!-- Wrapper -->
+  <div id="wrapper">
 
-  <h2>Homeless Proportional Symbol Map</h2>
-  <div id="map_pie_section">
-    <div id="proportional_symbols"></div>
-    <div id="pie_charts"></div>
+    <!-- Main -->
+    <div id="main">
+
+      <!-- One: Map -->
+      <section id="one">
+        <div class="container">
+
+          <h3>Choropleth Map</h3>
+
+          <p>
+            The map shows the total homeless population by state in 2013.
+            Click a state to update the pie charts and highlight the same state in the parallel coordinates plot.
+            Double-click the chart to reset the selection.
+          </p>
+
+          <div class="chart-scroll">
+            <div id="choropleth_map"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Two: Pie Charts -->
+      <section id="two">
+        <div class="container">
+          <h3>Pie Charts</h3>
+
+          <p>
+            The pie charts show the selected state's category breakdown, including chronic homelessness,
+            unaccompanied youth, veterans, and unsheltered homelessness.
+          </p>
+
+          <div class="chart-scroll">
+            <div id="pie_charts"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Three: Parallel Coordinates -->
+      <section id="three">
+        <div class="container">
+          <h3>Parallel Coordinates Plot</h3>
+
+          <p>
+            This chart compares multiple homelessness-related variables across states.
+            Users can brush over the lines to filter states and double-click the chart to reset the selection.
+          </p>
+
+          <div class="chart-scroll">
+            <div id="parallel_coordinate"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Four: Bar Chart -->
+      <section id="four">
+        <div class="container">
+          <h3>Bar Chart</h3>
+
+          <p>
+            This horizontal bar chart ranks the top 10 states by total homeless population in 2013.
+            Click one bar to highlight it. Double-click to reset. 
+            <strong>California ranked first. New York ranked second.</strong>
+          </p>
+
+          <div class="chart-scroll">
+            <div id="bar_chart"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Five: Line Chart -->
+      <section id="five">
+        <div class="container">
+          <h3>Line Chart</h3>
+
+          <p>
+            From 2005 to 2013, the homeless population decreased.
+          </p>
+
+          <div class="chart-scroll">
+            <div id="line_chart"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <section id="footer">
+      <div class="container">
+        <ul class="copyright">
+          <li>&copy; Pengfang Chen</li>
+          <li>Design: <a href="https://html5up.net">Homelessness Project</a></li>
+        </ul>
+      </div>
+    </section>
+
   </div>
 
-  <h2>Parallel Coordinates Plot</h2>
-  <div id="parallel_coordinate"></div>
-
-  <h2>Bar Chart</h2>
-  <div id="bar_chart"></div>
-
-  <h2>Line Chart</h2>
-  <div id="line_chart"></div>
-
   <div class="tooltip" id="tooltip"></div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrollex.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
   <script type="module" src="./bar/bar.js"></script>
   <script type="module" src="./line/line.js"></script>
-  <script type="module" src="./proportional/proportional.js"></script>
+  <script type="module" src="./choropleth/choropleth.js"></script>
   <script type="module" src="./parallel/parallel.js"></script>
-</body>
 
+</body>
 </html>

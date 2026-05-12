@@ -3,8 +3,8 @@ export function drawPieCharts(stateData) {
   d3.select("#pie_charts").html("");
   
   //set up the svg container
-  const svgWidth = 700;
-  const svgHeight = 700;
+  const svgWidth = 1000;
+  const svgHeight = 430;
 
   const svg = d3.select("#pie_charts")
     .append("svg")
@@ -22,7 +22,7 @@ export function drawPieCharts(stateData) {
 
   //Define a color scale for d3-svg-legend
   const colorScale = d3.scaleOrdinal()
-    .domain(["Selected Category", "Other"])
+    .domain(["Selected Category", "Unselected Category"])
     .range(["blue", "#deebf7"]);
   
   // Add d3-svg-legend
@@ -50,37 +50,37 @@ export function drawPieCharts(stateData) {
   // four pie chart data
   const pieDataList = [
     {
-      title: "Chronic Homelessness",
+      title: "Chronic",
       value: stateData.chronic_pct,
       mainLabel: "Chronic",
-      otherLabel: "Other"
+      otherLabel: "Non-Chronic"
     },
     {
       title: "Unaccompanied Youth",
       value: stateData.youth_pct,
-      mainLabel: "Youth",
-      otherLabel: "Other"
+      mainLabel: "Unaccompanied Youth",
+      otherLabel: "Accompanied Youth"
     },
     {
       title: "Veterans",
       value: stateData.veterans_pct,
       mainLabel: "Veterans",
-      otherLabel: "Other"
+      otherLabel: "Non-Veterans"
     },
     {
       title: "Unsheltered",
       value: stateData.unsheltered_pct,
       mainLabel: "Unsheltered",
-      otherLabel: "Other"
+      otherLabel: "Sheltered"
     }
   ];
   
   //four pie chart position
   const piePositions = [
-    { x: 180, y: 190 },
-    { x: 420, y: 190 },
-    { x: 180, y: 450 },
-    { x: 420, y: 450 }
+    { x: 140, y: 270 },
+    { x: 380, y: 270 },
+    { x: 620, y: 270 },
+    { x: 860, y: 270 }
   ];
   
   // loop each data value to draw four pie chart 
@@ -89,11 +89,10 @@ export function drawPieCharts(stateData) {
   });
 }
 
-
 function drawOnePieChart(svg, chartInfo, centerX, centerY) {
   
   //define piechart radius
-  const radius = 80;
+  const radius = 90;
 
   const chart = svg.append("g")
     .attr("transform", `translate(${centerX}, ${centerY})`);
@@ -105,7 +104,7 @@ function drawOnePieChart(svg, chartInfo, centerX, centerY) {
   
   // pie chart colour scale
   const colorScale = d3.scaleOrdinal()
-    .domain([chartInfo.mainLabel, "Other"])
+    .domain([chartInfo.mainLabel, chartInfo.otherLabel])
     .range(["blue", "#deebf7"]);
 
   const pie = d3.pie()
@@ -120,6 +119,8 @@ function drawOnePieChart(svg, chartInfo, centerX, centerY) {
     .innerRadius(radius * 0.6)
     .outerRadius(radius * 0.6);
 
+  const tooltip = d3.select("#tooltip");
+
   chart.selectAll("path")
     .data(pie(pieData))
     .enter()
@@ -127,7 +128,23 @@ function drawOnePieChart(svg, chartInfo, centerX, centerY) {
     .attr("d", arc)
     .attr("fill", d => colorScale(d.data.label))
     .attr("stroke", "white")
-    .attr("stroke-width", 1);
+    .attr("stroke-width", 1)
+    .on("mouseover", (event, d) =>{
+      tooltip
+        .html(`
+          <div><strong>Category:</strong> ${d.data.label}</div>
+          <div><strong>Percent:</strong> <span class="value">${d.data.value.toFixed(1)}%</span></div>
+        `)
+        .style("opacity", 1)
+    })
+    .on("mousemove", (event)=> {
+      tooltip
+        .style("left", (event.pageX + 12) + "px")
+        .style("top", (event.pageY - 28) + "px");
+    })
+    .on("mouseleave", ()=> {
+      tooltip.style("opacity", 0);
+    });
    
   chart.selectAll("text")
     .data(pie(pieData))
@@ -138,7 +155,7 @@ function drawOnePieChart(svg, chartInfo, centerX, centerY) {
     .attr("dominant-baseline", "middle")
     .attr("font-size", "10px")
     .attr("font-weight", "bold")
-    .attr("fill", d => d.data.label === "Other" ? "black" : "white")
+    .attr("fill", d => d.data.label === chartInfo.otherLabel ? "black" : "white")
     .text(d => d.data.value+"%");
 
   svg.append("text")

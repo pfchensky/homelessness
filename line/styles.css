@@ -20,3 +20,31 @@
 .axis text {
     font-size: 11px;
 }
+
+.tooltip {
+  position: absolute;
+  background: blue;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+h1,
+h2{
+  text-align: center;
+}
+
+#line_chart {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+#line_chart svg {
+  display: block;
+  margin: 0 auto;
+}

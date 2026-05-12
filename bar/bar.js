@@ -17,9 +17,9 @@ const chart=svg.append("g")
 //X-label
 svg.append("text")
   .attr("class", "axis text")
-  .attr("x", svgWidth/2)
-  .attr("y", svgHeight-30)
-  .text("Total Homeless People");
+  .attr("x", svgWidth/2-100)
+  .attr("y", svgHeight-20)
+  .text("Total Homeless People(k)");
 
 // Chart title
 svg.append("text")
@@ -41,6 +41,8 @@ d3.csv("2013_US_state_stat_pro.csv").then(function(data){
   // get top 10 states
   const top10 = data.slice(0, 10);
 
+  let selectedState = null;
+
   // Define X and Y scales
   const scaleX = d3.scaleLinear()
     .domain([0, 140000])
@@ -52,7 +54,7 @@ d3.csv("2013_US_state_stat_pro.csv").then(function(data){
   .padding(0.18);
 
   // Add bars
-  chart.selectAll(".bar")
+  const bars = chart.selectAll(".bar")
     .data(top10)
     .enter()
     .append("rect")
@@ -60,10 +62,16 @@ d3.csv("2013_US_state_stat_pro.csv").then(function(data){
     .attr("x", 0)
     .attr("y", d => scaleY(d.state))
     .attr("width", d => scaleX(d.total_homeless_persons))
-    .attr("height",  scaleY.bandwidth());
+    .attr("height",  scaleY.bandwidth())
+    .attr("fill", "blue")
+    .attr("opacity", 1)
+    .on("click", function(event, d) {
+      selectedState = d.state;
+      updateBarHighlight();
+    });
 
   // Add data labels
-  chart.selectAll(".bar-label")
+  const labels =chart.selectAll(".bar-label")
     .data(top10)
     .enter()
     .append("text")
@@ -71,13 +79,40 @@ d3.csv("2013_US_state_stat_pro.csv").then(function(data){
     .attr("y", d => scaleY(d.state) + scaleY.bandwidth() / 2)
     .attr("font-size","13px")
     .attr("text-anchor","middle")
-    .text(d=>d.total_homeless_persons);
+    .text(d => d3.format(".0f")(d.total_homeless_persons / 1000) + "k")
+    .on("click", function(event, d) {
+      selectedState = d.state;
+      updateBarHighlight();
+    });
+
+  function updateBarHighlight() {
+    bars
+      .attr("fill", d => d.state === selectedState ? "blue" : "#c7d4ff")
+      .attr("opacity", d => d.state === selectedState ? 1 : 0.25);
+
+    labels
+      .attr("opacity", d => d.state === selectedState ? 1 : 0.3)
+      .attr("font-weight", d => d.state === selectedState ? "bold" : "normal");
+  }
+  
+  // double click reset
+  d3.select("body").on("dblclick.barReset", function() {
+    selectedState = null;
+
+    bars
+      .attr("fill", "blue")
+      .attr("opacity", 1);
+
+    labels
+      .attr("opacity", 1)
+      .attr("font-weight", "normal");
+  });
   
   // Add X and Y axes
   chart.append("g")
     .attr("class", "axis axis-x")
     .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(scaleX).ticks(6));
+    .call(d3.axisBottom(scaleX).ticks(6).tickFormat(d => d3.format(".0f")(d / 1000)));
 
   chart.append("g")
     .attr("class", "axis axis-y")

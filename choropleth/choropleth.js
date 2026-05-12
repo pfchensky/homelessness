@@ -1,4 +1,5 @@
 import { drawPieCharts } from "./pie.js";
+import { highlightStateInPCP } from "../parallel/parallel.js";
 //set up the svg container
 const svgWidth=960;
 const svgHeight=600;
@@ -7,7 +8,7 @@ const margin={top:70,right:40,bottom:70,left:40};
 const width=svgWidth-margin.left-margin.right;
 const height=svgHeight-margin.top-margin.bottom;
 
-const svg=d3.select("#proportional_symbols")
+const svg=d3.select("#choropleth_map")
   .append("svg")
   .attr("width",svgWidth)
   .attr("height",svgHeight)
@@ -61,50 +62,59 @@ Promise.all([
   // path
   const path = d3.geoPath().projection(projection);
 
-  // draw states
-  chart.selectAll(".state")
+  // get min and max value
+  const minValue = d3.min(data, d => d.total_homeless_persons);
+  const maxValue = d3.max(data, d => d.total_homeless_persons);
+  
+  //define color scales
+  const sequentialScale=d3.scaleSequential()
+    .domain([minValue, maxValue])
+    .interpolator(d3.interpolateBlues);
+
+  //define a tooltip 
+  const tooltip=d3.select("#tooltip")
+  let selectedMapState = null;
+
+  // draw choropleth
+  const statePaths = chart.selectAll(".state")
     .data(states)
     .enter()
     .append("path")
     .attr("class", "state")
     .attr("d", path)
-    .attr("fill", "lightgray")
+    .attr("fill", d => sequentialScale(homelessMap.get(d.properties.name)))
     .attr("stroke", "white")
-    .attr("stroke-width", 1);
-  
-  // get min and max value
-  const minValue = d3.min(data, d => d.total_homeless_persons);
-  const maxValue = d3.max(data, d => d.total_homeless_persons);
-  
-  // radius scale
-  const radiusScale = d3.scaleSqrt()
-    .domain([minValue, maxValue])
-    .range([2, 20]);
-
-  //define a tooltip 
-  const tooltip=d3.select("#tooltip")
-
-  // draw proportional symbols
-  chart.selectAll(".symbol")
-    .data(states)
-    .enter()
-    .append("circle")
-    .attr("class", "symbol")
-    .attr("cx", d => path.centroid(d)[0])
-    .attr("cy", d => path.centroid(d)[1])
-    .attr("r", d => radiusScale(homelessMap.get(d.properties.name)))
-    .attr("fill", "blue")
-    .attr("fill-opacity", 0.6)
-    .attr("stroke", "black")
     .attr("stroke-width", 0.8)
     .on("click", (event, d) => {
-      drawPieCharts(stateDataMap.get(d.properties.name));
+      const stateName = d.properties.name;
+      selectedMapState = stateName;
+
+      // update map color
+      statePaths
+        .attr("fill", s => {
+          if (s.properties.name === selectedMapState) {
+            return "orange";
+          }
+          return sequentialScale(homelessMap.get(s.properties.name));
+        })
+        .attr("stroke", "white")
+        .attr("stroke-width",0.8);
+
+      // update pie chart 
+      drawPieCharts(stateDataMap.get(stateName));
+
+      // highlight same state in parallel coordinate plot
+      highlightStateInPCP(stateName);
+    })
+    .on("dblclick", (event, d) => {
+      event.stopPropagation();
+      resetMapSelection();
     })
     .on("mouseover", (event, d) =>{
       tooltip
         .html(`
           State: <strong>${d.properties.name}</strong><br>
-          Total Homeless Persons : <strong>${homelessMap.get(d.properties.name)}</strong><br>
+          Total Homeless Persons : <strong>${d3.format(",")(homelessMap.get(d.properties.name))}</strong><br>
         `)
         .style("opacity", 1)
     })
@@ -116,7 +126,23 @@ Promise.all([
     .on("mouseleave", ()=> {
       tooltip.style("opacity", 0);
     });
+  
+  function resetMapSelection() {
+    selectedMapState = null;
 
+    statePaths
+      .attr("fill", s => sequentialScale(homelessMap.get(s.properties.name)))
+      .attr("stroke", "white")
+      .attr("stroke-width", 0.8);
+
+    highlightStateInPCP(null);
+    drawPieCharts(data[0]);
+  }
+
+  svg.on("dblclick", function() {
+    resetMapSelection();
+  });
+  
   // state borders
   chart.append("path")
     .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
@@ -126,35 +152,37 @@ Promise.all([
     .attr("d", path);
 
   //Add d3-svg-legend
-  const legend = d3.legendSize()
-    .scale(radiusScale)
-    .shape("circle")
-    .shapePadding(15)
-    .labelOffset(10)
+  const legend = d3.legendColor()
+    .scale(sequentialScale)
+    .shapeWidth(30)
+    .shapeHeight(18)
+    .shapePadding(6)
     .orient("vertical")
     .labelFormat(d3.format(".0f"))
-    .title("Homeless Persons");
+    .title("Homeless Counts");
 
   svg.append("g")
-    .attr("class", "legendSize")
-    .attr("transform", `translate(${svgWidth - 140}, 300)`)
+    .attr("class", "legendSequential")
+    .attr("transform", `translate(${svgWidth - 150}, 400)`)
   
-  svg.select(".legendSize")
+  svg.select(".legendSequential")
     .call(legend)
+  
+  svg.select(".legendSequential")
+  .selectAll(".label")
+  .text(function() {
+    const value = +d3.select(this).text();
+    return d3.format(".0f")(value / 1000) + "k";
+  });
+  
+  svg.select(".legendSequential")
     .select(".legendTitle")
-    .attr("y",11)
+    .attr("y",12)
     .style("font-size","14px")
     
-  svg.select(".legendSize")
+  svg.select(".legendSequential")
     .selectAll("text")
     .style("font-size","14px");
-  
-  svg.select(".legendSize")
-    .selectAll("circle")
-    .attr("fill", "blue")
-    .attr("fill-opacity", 0.6)
-    .attr("stroke", "black")
-    .attr("stroke-width", 0.8)
 
   // default pie charts
   drawPieCharts(data[0]);

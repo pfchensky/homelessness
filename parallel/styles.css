@@ -1,39 +1,58 @@
 /* CSS styles for the chart */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+h1,
+h2{
+  text-align: center;
+}
+
+#parallel_coordinate {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+#parallel_coordinate svg {
+  display: block;
+  margin: 0 auto;
+}
+
 .line {
   fill: none;
   stroke: blue;
   stroke-width: 1.5;
   opacity: 0.35;
 }
+
 .line:hover {
   stroke: orange;
   stroke-width: 3;
   opacity: 1;
 }
-.axis-x path,
-.axis-y path {
-    fill: none;
-    stroke: black;
-    shape-rendering: crispEdges;
-}
 
-.axis-x .tick line,
-.axis-y .tick line {
-    stroke: #ccc;
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
 }
 
 .axis text {
-    font-size: 11px;
+  font-size: 12px;
 }
 
 .tooltip {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 13px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.15s ease;
+  position: absolute;
+  background: blue;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
 }
