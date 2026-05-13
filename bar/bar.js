@@ -8,6 +8,10 @@ const height=svgHeight-margin.top-margin.bottom;
 
 const svg=d3.select("#bar_chart")
   .append("svg")
+  .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+  .attr("preserveAspectRatio", "xMinYMin meet")
+  .style("width", "100%")
+  .style("height", "auto")
   .attr("width",svgWidth)
   .attr("height",svgHeight)
 

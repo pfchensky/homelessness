@@ -11,6 +11,10 @@ let updatePCPLines = null;
 
 const svg = d3.select("#parallel_coordinate")
   .append("svg")
+  .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+  .attr("preserveAspectRatio", "xMinYMin meet")
+  .style("width", "100%")
+  .style("height", "auto")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
 

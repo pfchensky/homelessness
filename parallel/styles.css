@@ -56,3 +56,57 @@ h2{
   opacity: 0;
   transition: opacity 0.15s ease;
 }
+
+/* CSS styles for the chart */
+.tooltip {
+    position: absolute;
+    background:blue;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+.tooltip strong {
+  color: white;
+}
+
+#map_pie_section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+#choropleth_map {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#pie_charts {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+}
+
+#choropleth_map svg,
+#pie_charts svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.pie-tooltip {
+    position: absolute;
+    background:blue;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}

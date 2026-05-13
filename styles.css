@@ -27,3 +27,26 @@
     opacity: 0;
     transition: opacity 0.15s ease;
 }
+
+#bar_chart {
+  width: 820px;
+  max-width: 100%;
+  margin: 0 auto;
+  /* overflow-x: auto; */
+}
+
+#bar_chart svg {
+  display: block;
+}
+
+#line_chart {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+#line_chart svg {
+  display: block;
+  margin: 0 auto;
+}

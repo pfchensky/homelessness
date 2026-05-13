@@ -8,8 +8,12 @@ export function drawPieCharts(stateData) {
 
   const svg = d3.select("#pie_charts")
     .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight);
+    .attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`)
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .style("width", "100%")
+    .style("height", "auto")
+    // .attr("width", svgWidth)
+    // .attr("height", svgHeight);
   
   // add the chosen state name as title
   svg.append("text")
