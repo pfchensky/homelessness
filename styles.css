@@ -50,3 +50,14 @@
   display: block;
   margin: 0 auto;
 }
+
+#six .container {
+  text-align: left;
+}
+
+#six h3,
+#six p {
+  font-size: 0.95em;
+  line-height: 1.6;
+  text-align: left;
+}
